@@ -128,7 +128,8 @@ public class CNMining {
     }
 
     public static Node setNode(Node n, Graph grafoUnfolded) {
-        for (int ni = 0; ni < grafoUnfolded.listaNodi().size(); ni++) {
+        int grafoUnfoldedListaNodiSize = grafoUnfolded.listaNodi().size();
+        for (int ni = 0; ni < grafoUnfoldedListaNodiSize; ni++) {
             n = (Node) grafoUnfolded.listaNodi().get(ni);
             n.setMark(false);
         }
@@ -136,11 +137,11 @@ public class CNMining {
     }
 
     public static Edge setEdge(Edge e, Constraint c, Graph grafoFolded, ConstraintsManager vincoli) {
-
-        for (int jj = 0; jj < grafoFolded.getLista_archi().size(); jj++) {
+        int grafoFoldedListaArchiSize = grafoFolded.getLista_archi().size();
+        for (int jj = 0; jj < grafoFoldedListaArchiSize; jj++) {
             e = (Edge) grafoFolded.getLista_archi().get(jj);
-
-            for (int kk = 0; kk < vincoli.positivi.size(); kk++) {
+            int vincoliPositiviSize = vincoli.positivi.size();
+            for (int kk = 0; kk < vincoliPositiviSize; kk++) {
                 c = (Constraint) vincoli.positivi.get(kk);
                 if ((c.getBodyList().contains(e.getX().getNomeAttivita())) && (c.getHeadList().contains(e.getY().getNomeAttivita()))) {
                     e.setFlag(true);
@@ -154,10 +155,9 @@ public class CNMining {
     }
 
     public static Edge findBestRemovable(Edge e, Edge bestRemovable, ObjectArrayList<Edge> removableEdges, double[][] causalScoreMatrixResidua) {
-
-
         double worst_causal_score = Double.MAX_VALUE;
-        for (int jj = 0; jj < removableEdges.size(); jj++) {
+        int removableEdgesSize = removableEdges.size();
+        for (int jj = 0; jj < removableEdgesSize; jj++) {
             e = (Edge) removableEdges.get(jj);
 
             double e_cs = causalScoreMatrixResidua[e.getX().getID_attivita()][e.getY().getID_attivita()];
@@ -218,12 +218,13 @@ public class CNMining {
     }
 
     public static void findRemovableNodes(Node n, Graph grafoFolded, ObjectArrayList<Node> removableNodes) {
-
-        for (int jj = 0; jj < grafoFolded.listaNodi().size(); jj++) {
+        int grafoFoldedListaNodiSize = grafoFolded.listaNodi().size();
+        for (int jj = 0; jj < grafoFoldedListaNodiSize; jj++) {
             n = (Node) grafoFolded.listaNodi().get(jj);
             if ((n.getInner_degree() == 0) && (n.getOuter_degree() == 0)) {
                 removableNodes.add(n);
             }
+            grafoFoldedListaNodiSize = grafoFolded.listaNodi().size();
         }
     }
 
