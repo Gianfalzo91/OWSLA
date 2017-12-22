@@ -128,8 +128,7 @@ public class CNMining {
     }
 
     public static Node setNode(Node n, Graph grafoUnfolded) {
-        int grafoUnfoldedListaNodiSize = grafoUnfolded.listaNodi().size();
-        for (int ni = 0; ni < grafoUnfoldedListaNodiSize; ni++) {
+        for (int ni = 0; ni < grafoUnfolded.listaNodi().size(); ni++) {
             n = (Node) grafoUnfolded.listaNodi().get(ni);
             n.setMark(false);
         }
@@ -137,11 +136,11 @@ public class CNMining {
     }
 
     public static Edge setEdge(Edge e, Constraint c, Graph grafoFolded, ConstraintsManager vincoli) {
-        int grafoFoldedListaArchiSize = grafoFolded.getLista_archi().size();
-        for (int jj = 0; jj < grafoFoldedListaArchiSize; jj++) {
+
+        for (int jj = 0; jj < grafoFolded.getLista_archi().size(); jj++) {
             e = (Edge) grafoFolded.getLista_archi().get(jj);
-            int vincoliPositiviSize = vincoli.positivi.size();
-            for (int kk = 0; kk < vincoliPositiviSize; kk++) {
+
+            for (int kk = 0; kk < vincoli.positivi.size(); kk++) {
                 c = (Constraint) vincoli.positivi.get(kk);
                 if ((c.getBodyList().contains(e.getX().getNomeAttivita())) && (c.getHeadList().contains(e.getY().getNomeAttivita()))) {
                     e.setFlag(true);
@@ -158,8 +157,7 @@ public class CNMining {
 
 
         double worst_causal_score = Double.MAX_VALUE;
-        int removableEdgesSize = removableEdges.size();
-        for (int jj = 0; jj < removableEdgesSize; jj++) {
+        for (int jj = 0; jj < removableEdges.size(); jj++) {
             e = (Edge) removableEdges.get(jj);
 
             double e_cs = causalScoreMatrixResidua[e.getX().getID_attivita()][e.getY().getID_attivita()];
@@ -220,8 +218,8 @@ public class CNMining {
     }
 
     public static void findRemovableNodes(Node n, Graph grafoFolded, ObjectArrayList<Node> removableNodes) {
-        int grafoFoldedListaNodiSize = grafoFolded.listaNodi().size();
-        for (int jj = 0; jj < grafoFoldedListaNodiSize; jj++) {
+
+        for (int jj = 0; jj < grafoFolded.listaNodi().size(); jj++) {
             n = (Node) grafoFolded.listaNodi().get(jj);
             if ((n.getInner_degree() == 0) && (n.getOuter_degree() == 0)) {
                 removableNodes.add(n);
@@ -230,8 +228,8 @@ public class CNMining {
     }
 
     public static void removeNodes(Node removableNode, ObjectArrayList<Node> removableNodes, Graph grafoFolded) {
-        int removableNodesSize = removableNodes.size();
-        for (int jj = 0; jj < removableNodesSize; jj++) {
+
+        for (int jj = 0; jj < removableNodes.size(); jj++) {
             removableNode = (Node) removableNodes.get(jj);
             grafoFolded.removeNode(removableNode);
         }
@@ -504,8 +502,7 @@ public class CNMining {
                     if (constraints.size() == 0) {
                         JOptionPane.showMessageDialog(null, "No constraints contained in the input file...");
                     }
-                    int constraintsSize = constraints.size();
-                    for (int i = 0; i < constraintsSize; i++) {
+                    for (int i = 0; i < constraints.size(); i++) {
                         Constraint constr = (Constraint) constraints.get(i);
                         if (constr.isPositiveConstraint()) {
                             vincoli.positivi.add(constr);
@@ -516,7 +513,6 @@ public class CNMining {
 
                             vincoli.negati.add(constr);
                         }
-                        constraintsSize = constraints.size();
                     }
                 }
             }
@@ -585,8 +581,7 @@ public class CNMining {
 
     public static void RE(Graph folded_g, ObjectArrayList<Node> startActs, ObjectArrayList<Node> endActs, Node start, Node end) {
         Edge e = null;
-        int foldedGListaArchiSize = folded_g.getLista_archi().size();
-        for (int ii = 0; ii < foldedGListaArchiSize; ii++) {
+        for (int ii = 0; ii < folded_g.getLista_archi().size(); ii++) {
             e = (Edge) folded_g.getLista_archi().get(ii);
             if (e.getX().equals(start)) {
                 folded_g.getLista_archi().removeAllOccurrences(e);
@@ -603,14 +598,13 @@ public class CNMining {
                 e.getX().decr_Outer_degree();
                 ii--;
             }
-            foldedGListaArchiSize = folded_g.getLista_archi().size();
         }
     }
 
     public static Graph CNN(Graph folded_g, Graph cleanG, int startID, int endID, ObjectIntOpenHashMap<String> folded_map) {
         Node n;
-        int foldedGListaNodiSize = folded_g.listaNodi().size();
-        for (int ii = 0; ii < foldedGListaNodiSize; ii++) {
+
+        for (int ii = 0; ii < folded_g.listaNodi().size(); ii++) {
             n = (Node) folded_g.listaNodi().get(ii);
             if ((n.getID_attivita() > startID) && (n.getID_attivita() < endID)) {
                 Node newNode = new Node(n.getNomeAttivita(), n.getID_attivita() - 1);
@@ -628,7 +622,6 @@ public class CNMining {
                 folded_map.put(newNode.getNomeAttivita(), newNode.getID_attivita());
                 cleanG.getMap().put(newNode, new ObjectOpenHashSet());
             }
-            foldedGListaNodiSize = folded_g.listaNodi().size();
         }
         return cleanG;
     }
@@ -636,12 +629,11 @@ public class CNMining {
     public Graph rimuoviAttivitaFittizie(Graph folded_g, ObjectIntOpenHashMap<String> folded_map, ObjectObjectOpenHashMap<String, ObjectArrayList<String>> traccia_attivita, ObjectObjectOpenHashMap<String, ObjectArrayList<String>> attivita_traccia, Node start, Node end, XLog log, ObjectArrayList<Node> startActivities, ObjectArrayList<Node> endActivities) {
         ObjectArrayList<Node> startActs = new ObjectArrayList<Node>();
         ObjectArrayList<Node> endActs = new ObjectArrayList<Node>();
-        int logSize = log.size();
-        for (int i = 0; i < logSize; i++) {
+
+        for (int i = 0; i < log.size(); i++) {
             XTrace trace = (XTrace) log.get(i);
             trace.remove(0);
             trace.remove(trace.size() - 1);
-            logSize = log.size();
         }
 
         int startID = start.getID_attivita();
@@ -708,14 +700,12 @@ public class CNMining {
     }
 
     private void removeStrangeDependencies(Graph g, ObjectIntOpenHashMap<String> map, ObjectArrayList<Constraint> vincoli_positivi) {
-        int gListaNodiSize = g.listaNodi().size();
-        for (int ii = 0; ii < gListaNodiSize; ii++) {
+        for (int ii = 0; ii < g.listaNodi().size(); ii++) {
             Node n = (Node) g.listaNodi().get(ii);
             g.removeEdge(n, n);
             n.decr_Outer_degree();
             n.decr_Inner_degree();
-            int gAdjacentNodesSize = g.adjacentNodes(n).size();
-            for (int jj = 0; jj < gAdjacentNodesSize); jj++) {
+            for (int jj = 0; jj < g.adjacentNodes(n).size(); jj++) {
                 Node adjNode = (Node) g.listaNodi().get(jj);
 
                 if (n.getNomeAttivita().split("_")[1].split("\\+")[0].equals(adjNode.getNomeAttivita().split("_")[0])) {
@@ -725,9 +715,7 @@ public class CNMining {
                     n.decr_Outer_degree();
                     adjNode.decr_Inner_degree();
                 }
-                gAdjacentNodesSize = g.adjacentNodes(n).size();
             }
-            gListaNodiSize = g.listaNodi().size();
         }
 
         Node pb = new Node("via panebianco_via busento (rende 1o fermata)+complete",
