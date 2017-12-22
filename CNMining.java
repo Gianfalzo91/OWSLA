@@ -699,21 +699,23 @@ public class CNMining {
         CLIContext context = new CLIContext();
         CLIPluginContext pluginContext = new CLIPluginContext(context, "test");
         ProMJGraphPanel mainPanel = ProMJGraphVisualizer.instance().visualizeGraph(pluginContext, flex);
+
         mainPanel.setSize(new Dimension(500, 500));
+
         ProMJGraph graph = (ProMJGraph) mainPanel.getComponent();
         graph.setSize(new Dimension(500, 500));
     }
 
     private void removeStrangeDependencies(Graph g, ObjectIntOpenHashMap<String> map, ObjectArrayList<Constraint> vincoli_positivi) {
         int gListaNodiSize = g.listaNodi().size();
-        int gAdjacentNodes;
+        int gAdjacentNodesSize;
         for (int ii = 0; ii < gListaNodiSize; ii++) {
             Node n = (Node) g.listaNodi().get(ii);
             g.removeEdge(n, n);
             n.decr_Outer_degree();
             n.decr_Inner_degree();
-            gAdjacentNodes = g.adjacentNodes(n).size();
-            for (int jj = 0; jj < gAdjacentNodes; jj++) {
+            gAdjacentNodesSize = g.adjacentNodes(n).size();
+            for (int jj = 0; jj < gAdjacentNodesSize; jj++) {
                 Node adjNode = (Node) g.listaNodi().get(jj);
 
                 if (n.getNomeAttivita().split("_")[1].split("\\+")[0].equals(adjNode.getNomeAttivita().split("_")[0])) {
@@ -723,7 +725,7 @@ public class CNMining {
                     n.decr_Outer_degree();
                     adjNode.decr_Inner_degree();
                 }
-                gAdjacentNodes = g.adjacentNodes(n).size();
+                gAdjacentNodesSize = g.adjacentNodes(n).size();
             }
             gListaNodiSize = g.listaNodi().size();
         }
@@ -737,12 +739,10 @@ public class CNMining {
 
     public boolean[][] generaAdjacentsMatrix(Graph folded_g) {
         boolean[][] adjacentsMatrix = new boolean[folded_g.listaNodi().size()][folded_g.listaNodi().size()];
-        int foldedGListaNodiSize = folded_g.listaNodi().size();
-        int foldedGAdjacentNodesSize;
-        for (int i = 0; i < foldedGListaNodiSize; i++) {
+
+        for (int i = 0; i < folded_g.listaNodi().size(); i++) {
             Node n = (Node) folded_g.listaNodi().get(i);
-            foldedGAdjacentNodesSize = folded_g.adjacentNodes(n).size();
-            for (int j = 0; j < foldedGAdjacentNodesSize); j++) {
+            for (int j = 0; j < folded_g.adjacentNodes(n).size(); j++) {
                 Node adjacent = (Node) folded_g.adjacentNodes(n).get(j);
                 adjacentsMatrix[n.getID_attivita()][adjacent.getID_attivita()] = true;
             }
@@ -751,12 +751,9 @@ public class CNMining {
     }
 
     public boolean verifica_consistenza_vincoli(ObjectArrayList<Constraint> vincoli_positivi, ObjectArrayList<Constraint> vincoli_negati) {
-        int vincoliPositiviSize = vincoli_positivi.size();
-        int vincoliNegatiSize;
-        for (int i = 0; i < vincoliPositiviSize; i++) {
+        for (int i = 0; i < vincoli_positivi.size(); i++) {
             Constraint c = (Constraint) vincoli_positivi.get(i);
-            vincoliNegatiSize = vincoli_negati.size();
-            for (int j = 0; j < vincoliNegatiSize; j++) {
+            for (int j = 0; j < vincoli_negati.size(); j++) {
                 Constraint f = (Constraint) vincoli_negati.get(j);
                 if ((c.equals(f)) && (((c.isPathConstraint()) && (f.isPathConstraint())) || ((!c.isPathConstraint()) && (!f.isPathConstraint()))))
                     return false;
