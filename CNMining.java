@@ -743,6 +743,7 @@ public class CNMining {
         boolean[][] adjacentsMatrix = new boolean[foldedGListaNodiSize][foldedGListaNodiSize];
         for (int i = 0; i < foldedGListaNodiSize; i++) {
             Node n = (Node) folded_g.listaNodi().get(i);
+            foldedGAdjacentNodesSize = folded_g.adjacentNodes(n).size();
             for (int j = 0; j < foldedGAdjacentNodesSize; j++) {
                 Node adjacent = (Node) folded_g.adjacentNodes(n).get(j);
                 adjacentsMatrix[n.getID_attivita()][adjacent.getID_attivita()] = true;
@@ -752,10 +753,11 @@ public class CNMining {
     }
 
     public boolean verifica_consistenza_vincoli(ObjectArrayList<Constraint> vincoli_positivi, ObjectArrayList<Constraint> vincoli_negati) {
-        int vincoliPositiviSize
-        for (int i = 0; i < vincoli_positivi.size(); i++) {
+        int vincoliPositiviSize = vincoli_positivi.size();
+        int vincoliNegatiSize = vincoli_negati.size();
+        for (int i = 0; i < vincoliPositiviSize; i++) {
             Constraint c = (Constraint) vincoli_positivi.get(i);
-            for (int j = 0; j < vincoli_negati.size(); j++) {
+            for (int j = 0; j < vincoliNegatiSize; j++) {
                 Constraint f = (Constraint) vincoli_negati.get(j);
                 if ((c.equals(f)) && (((c.isPathConstraint()) && (f.isPathConstraint())) || ((!c.isPathConstraint()) && (!f.isPathConstraint()))))
                     return false;
