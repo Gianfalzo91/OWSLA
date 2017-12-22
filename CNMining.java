@@ -774,8 +774,8 @@ public class CNMining {
 
     public void aggiungiAttivitaFittizia(XLog xlog) {
         XFactory factory = (XFactory) XFactoryRegistry.instance().currentDefault();
-
-        for (int i = 0; i < xlog.size(); i++) {
+        int xlogSize = xlog.size();
+        for (int i = 0; i < xlogSize; i++) {
             XTrace trace = (XTrace) xlog.get(i);
             XEvent activity_first = (XEvent) trace.get(0);
             XEvent activity_last = (XEvent) trace.get(trace.size() - 1);
@@ -810,6 +810,7 @@ public class CNMining {
                 XTimeExtension.instance().assignTimestamp(event_last, new Date(last_activity_ts.getTime() + 10L));
             }
             trace.add(event_last);
+            xlogSize = xlog.size();
         }
     }
 
@@ -817,7 +818,8 @@ public class CNMining {
         sigma = -100.0D;
         Node x = new Node(bestBodyNode, map.get(bestBodyNode));
         Node a = new Node(bestHeadNode, map.get(bestHeadNode));
-        for (int i = 0; i < lista_vincoli_positivi_unfolded.size(); i++) {
+        int listaVincoliPositiviUnfoldedSize = lista_vincoli_positivi_unfolded.size();
+        for (int i = 0; i < listaVincoliPositiviUnfoldedSize; i++) {
             Constraint vincolo = (Constraint) lista_vincoli_positivi_unfolded.get(i);
 
             if (!vincolo.isPathConstraint()) {
@@ -875,8 +877,8 @@ public class CNMining {
             if (unfolded_g.isConnected(x, a)) {
                 break;
             }
-
-            for (int ni = 0; ni < unfolded_g.listaNodi().size(); ni++) {
+            int unfoldedGListaNodiSize = unfolded_g.listaNodi().size();
+            for (int ni = 0; ni < unfoldedGListaNodiSize; ni++) {
                 Node n = (Node) unfolded_g.listaNodi().get(ni);
                 n.setMark(false);
             }
@@ -995,8 +997,8 @@ public class CNMining {
         Node x = null;
 
         Node a = null;
-
-        for (int i = 0; i < lista_vincoli_positivi_unfolded.size(); i++) {
+        int listaVincoliPositiviUnfoldedSize = lista_vincoli_positivi_unfolded.size();
+        for (int i = 0; i < listaVincoliPositiviUnfoldedSize; i++) {
             Constraint vincolo = (Constraint) lista_vincoli_positivi_unfolded.get(i);
 
             if (vincolo.isPathConstraint()) {
@@ -1297,8 +1299,8 @@ public class CNMining {
                     m, graph, map, vincoli_positivi,
                     folded_map, folded_g
             );
-
-            for (int i = 0; i < ap_rimosse.size(); i++) {
+            int apRimosseSize = ap_rimosse.size();
+            for (int i = 0; i < apRimosseSize; i++) {
                 attivita_parallele.removeFirstOccurrence((FakeDependency) ap_rimosse.get(i));
             }
 
@@ -1309,8 +1311,8 @@ public class CNMining {
             FakeDependency best_ap = null;
 
             double best_causal_score = Double.MAX_VALUE;
-
-            for (int i = 0; i < attivita_parallele.size(); i++) {
+            int attivitaParalleleSize = attivita_parallele.size();
+            for (int i = 0; i < attivitaParalleleSize; i++) {
                 FakeDependency current_ap = (FakeDependency) attivita_parallele.get(i);
 
                 double current_ap_cs = csm[current_ap.getAttivita_x()][current_ap.getAttivita_y()];
