@@ -133,7 +133,6 @@ public class CNMining
         }
         
         public static Node setNode(Node n, Graph grafoUnfolded){
-		    int grafoUnfolded.listaNodi().size();
             for (int ni = 0; ni < grafoUnfolded.listaNodi().size(); ni++) {
 	  		n = (Node)grafoUnfolded.listaNodi().get(ni);
 	  		n.setMark(false);
