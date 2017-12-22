@@ -738,11 +738,12 @@ public class CNMining {
     }
 
     public boolean[][] generaAdjacentsMatrix(Graph folded_g) {
-        boolean[][] adjacentsMatrix = new boolean[folded_g.listaNodi().size()][folded_g.listaNodi().size()];
-
-        for (int i = 0; i < folded_g.listaNodi().size(); i++) {
+        int foldedGListaNodiSize = folded_g.listaNodi().size();
+        int foldedGAdjacentNodesSize;
+        boolean[][] adjacentsMatrix = new boolean[foldedGListaNodiSize][foldedGListaNodiSize];
+        for (int i = 0; i < foldedGListaNodiSize; i++) {
             Node n = (Node) folded_g.listaNodi().get(i);
-            for (int j = 0; j < folded_g.adjacentNodes(n).size(); j++) {
+            for (int j = 0; j < foldedGAdjacentNodesSize; j++) {
                 Node adjacent = (Node) folded_g.adjacentNodes(n).get(j);
                 adjacentsMatrix[n.getID_attivita()][adjacent.getID_attivita()] = true;
             }
@@ -751,6 +752,7 @@ public class CNMining {
     }
 
     public boolean verifica_consistenza_vincoli(ObjectArrayList<Constraint> vincoli_positivi, ObjectArrayList<Constraint> vincoli_negati) {
+        int vincoliPositiviSize
         for (int i = 0; i < vincoli_positivi.size(); i++) {
             Constraint c = (Constraint) vincoli_positivi.get(i);
             for (int j = 0; j < vincoli_negati.size(); j++) {
